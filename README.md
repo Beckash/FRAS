@@ -44,6 +44,8 @@ An automated, real-time biometric attendance management system built with Python
 
 
 ## Project Structure
+
+```text
 ├── manage.py
 ├── requirements.txt
 ├── README.md
@@ -58,6 +60,7 @@ An automated, real-time biometric attendance management system built with Python
 │   ├── urls.py
 │   └── templates/          # HTML templates for the web portal
 └── dataset/                # Stored user profile vectors and images
+```
 
 ## Complete Installation & Setup Guide
 Follow these steps sequentially to set up and run the system locally on your machine:
@@ -72,7 +75,7 @@ Follow these steps sequentially to set up and run the system locally on your mac
 
 - python3 -m venv venv
 - source venv/bin/activate
-- 
+  
 #### On Windows:
 
 - python -m venv venv
@@ -81,8 +84,8 @@ Follow these steps sequentially to set up and run the system locally on your mac
 ### 3. Install Required Dependencies
 #### Ensure you have pip updated, then run:
 
--pip install --upgrade pip
--pip install -r requirements.txt
+- pip install --upgrade pip
+- pip install -r requirements.txt
 
 ### 4. Apply Database Migrations
 
