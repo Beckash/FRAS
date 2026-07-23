@@ -81,7 +81,7 @@ pip install -r requirements.txt
 
 ### 4. Apply Database Migrations
 
-## Create the database tables for user profiles, attendance logs, and sessions:
+#### Create the database tables for user profiles, attendance logs, and sessions:
 
 - python manage.py makemigrations
 - python manage.py migrate
