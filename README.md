@@ -62,39 +62,40 @@ An automated, real-time biometric attendance management system built with Python
 ## Complete Installation & Setup Guide
 Follow these steps sequentially to set up and run the system locally on your machine:
 
-1. Clone the Repository
+### 1. Clone the Repository
 git clone [https://github.com/your-username/face-recognition-attendance.git](https://github.com/your-username/face-recognition-attendance.git)
 cd face-recognition-attendance
 
-2. Set Up a Virtual Environment
-On Linux / macOS:
+### 2. Set Up a Virtual Environment
+#### On Linux / macOS:
 python3 -m venv venv
 source venv/bin/activate
-On Windows:
+#### On Windows:
 python -m venv venv
 venv\Scripts\activate
 
-3. Install Required Dependencies
-Ensure you have pip updated, then run:
+### 3. Install Required Dependencies
+#### Ensure you have pip updated, then run:
 pip install --upgrade pip
 pip install -r requirements.txt
 
-4. Apply Database Migrations
-Create the database tables for user profiles, attendance logs, and sessions:
+### 4. Apply Database Migrations
+
+##### Create the database tables for user profiles, attendance logs, and sessions:
 python manage.py makemigrations
 python manage.py migrate
 
-5. Create an Administrative Superuser
-Create an admin account to access the administrative web portal:
+### 5. Create an Administrative Superuser
+##### Create an admin account to access the administrative web portal:
 python manage.py createsuperuser
 
-6. Run the Development Server
-Start the Django server:
+### 6. Run the Development Server
+#### Start the Django server:
 python manage.py runserver
 
 #### Open your browser and go to http://127.0.0.1:8000/.
 
-How to Use the System
+## How to Use the System
  1. Log In: Access the Django admin portal using your superuser credentials.
 
  2. Register Users: Create user profiles (e.g., students or employees) and collect face sample images to build baseline feature embeddings.
