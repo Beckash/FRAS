@@ -14,10 +14,10 @@
 <br />
 
 ### ⚡ Quick Overview
-- 🔭 **Currently Building:** Scalable web backends and intelligent computer vision pipelines.
-- 🎯 **Focus Areas:** Full-stack architecture, software engineering principles, and mobile development.
-- 🌱 **Tech Stack:** Python, Django, Java, REST APIs, and Machine Learning.
-- 💬 **Ask me about:** Python backend architecture, Android dev, and computer vision integration.
+- 🔭 **Currently Building:** Scalable web backends and computer vision applications.
+- 🎯 **Focus Areas:** Software engineering, full-stack web architecture, and mobile development.
+- 🌱 **Tech Stack:** Python, Django, Java, Deep Learning / Computer Vision, and REST APIs.
+- 💬 **Ask me about:** Python backend engineering, computer vision models, and Android dev.
 
 ---
 
@@ -35,22 +35,33 @@
 <p align="left">
   <!-- Frameworks & Tools -->
   <img src="https://img.shields.io/badge/Django-092E20?style=for-the-badge&logo=django&logoColor=white" />
-  <img src="https://img.shields.io/badge/Android_Studio-3DDC84?style=for-the-badge&logo=android-studio&logoColor=white" />
   <img src="https://img.shields.io/badge/TensorFlow-FF6F00?style=for-the-badge&logo=tensorflow&logoColor=white" />
   <img src="https://img.shields.io/badge/Keras-D00000?style=for-the-badge&logo=keras&logoColor=white" />
+  <img src="https://img.shields.io/badge/Android_Studio-3DDC84?style=for-the-badge&logo=android-studio&logoColor=white" />
   <img src="https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white" />
   <img src="https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black" />
 </p>
 
 ---
 
-### 🚀 Featured Repositories
+### 🎓 Featured Capstone Project
+
+#### 🎓 [Face Recognition Attendance Management System](#)
+> **Final Year University Capstone Project**  
+> An automated, real-time attendance system engineered to replace manual roll-calls with biometric computer vision.
+
+* **Architecture & Detection:** Utilized **MTCNN (Multi-task Cascaded Convolutional Networks)** for precise facial detection and frame alignment across varying lighting conditions.
+* **Deep Learning Engine:** Integrated **Keras** and **TensorFlow** pre-trained models to extract deep facial embeddings for accurate identity matching.
+* **Backend & Portal:** Engineered a robust **Django (Python)** web portal for real-time video feed intake, user enrollment, automated logging, and attendance analytics generation.
+
+---
+
+### 🚀 Key Projects
 
 | Repository | Tech Stack | Description |
 | :--- | :--- | :--- |
-| **[Face-Recognition-Attendance](#)** | `Python` `Django` `TensorFlow` | Real-time automated face recognition attendance management system using MTCNN & Keras. |
-| **[StudyPlannerPro](#)** | `Java` `Android` `SQLite` | Native Android application engineered for task tracking, schedule automation, and student productivity. |
-
+| **[Face-Recognition-Attendance](#)** | `Python` `Django` `MTCNN` `Keras` | Computer vision biometric attendance management system. |
+| **[StudyPlannerPro](#)** | `Java` `Android Studio` `SQLite` | Native Android productivity tool for task management and automated schedule planning. |
 ---
 
 ### 📊 GitHub Activity & Metrics
