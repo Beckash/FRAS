@@ -1,0 +1,108 @@
+{% extends 'head_template/base_template.html' %}
+
+{% block page_title %}
+    Manage Register For Course
+{% endblock page_title %}
+
+{% block main_content %}
+
+{% load static %}
+
+<section class="content">
+        <div class="container-fluid">
+
+            <a class="btn btn-primary" href="{% url 'register_for_course' %}" role="button">+ Register Courses</a> <br/>&nbsp;
+
+            {% if messages %}
+                                <div class="form-group">
+                                <div class="col-12">
+                                    {% for message in messages %}
+                                    {% if message.tags == "error" %}
+                                        <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                                        {{ message }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        </div>
+                                    {% elif message.tags == "success" %}
+                                        <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                                        {{ message }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        </div>
+                                    {% endif %}
+                                    {% endfor %}
+                                </div>
+                                </div>
+                                {% endif %}
+
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- general form elements -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Registered Students Details</h3>
+
+                            <div class="card-tools">
+                            <div class="input-group input-group-sm" style="width: 150px;">
+                                <input type="text" name="table_search" id="my_table_search" class="form-control float-right" placeholder="Search">
+
+                                <div class="input-group-append">
+                                <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body table-responsive p-0">
+                            <table class="table table-hover text-nowrap">
+                            <thead>
+                                <tr>
+                                <th>ID</th>
+                                <th>Department</th>
+                                <th>Student</th>
+                                <th>Subject</th>
+                                <th>Curricclum</th>
+                                <th>Semester</th>
+                                <th>Batch</th>
+                                <th>Section</th>
+                                <th>Created At</th>
+                                <th>Updated At</th>
+                                <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="myTable">
+                                {% for registerforcourse in registerforcourses %}
+                                <tr>
+                                <td>{{ registerforcourse.id }}</td>
+                                <td>{{ registerforcourse.department_id.department_name }}</td>
+                                <td>{{ registerforcourse.student_id.admin.first_name }} {{ registerforcourse.student_id.admin.last_name }}</td>
+                                <td>{{ registerforcourse.subject_id.subject_name }}</td>
+                                <td>{{ registerforcourse.curicullem }}</td>
+                                <td>{{ registerforcourse.semester }}</td>
+                                <td>{{ registerforcourse.batch }}</td>
+                                <td>{{ registerforcourse.section }}</td>
+                                <td>{{ registerforcourse.created_at }}</td>
+                                <td>{{ registerforcourse.updated_at }}</td>
+                                <td>
+                                    <a href="{% url 'edit_register_for_course' registerforcourse.id %}" class="btn btn-success">Edit</a>
+                                    <a href="{% url 'delete_register_for_course' registerforcourse.id %}" class="btn btn-danger">Delete</a>
+                                </td>
+                                </tr>
+                                {% endfor %}
+                                
+                            </tbody>
+                            </table>
+                        </div>
+                        <!-- /.card-body -->
+                        </div>
+                    <!-- /.card -->
+
+                </div>
+            </div>
+
+        </div><!-- /.container-fluid -->
+      </section>
+
+  {% endblock main_content %}

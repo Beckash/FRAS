@@ -1,0 +1,130 @@
+{% extends 'head_template/base_template.html' %}
+
+{% block page_title %}
+    Add Attendance Weight
+{% endblock page_title %}
+
+{% block main_content %}
+
+{% load static %}
+
+<section class="content">
+        <div class="container-fluid">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- general form elements -->
+                    <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Add Attendance Weight</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <!-- form start -->
+                    <form role="form" method="POST" action="{% url 'head_add_session_save' %}">
+                        {% csrf_token %}
+
+                        
+                                {% comment %} Display Messages {% endcomment %}
+                                {% if messages %}
+                                <div class="form-group">
+                                <div class="col-12">
+                                    {% for message in messages %}
+                                    {% if message.tags == "error" %}
+                                        <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                                        {{ message }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        </div>
+                                    {% elif message.tags == "success" %}
+                                        <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                                        {{ message }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        </div>
+                                    {% endif %}
+                                    {% endfor %}
+                                </div>
+                                </div>
+                                {% endif %}
+                            
+
+                        <div class="card-body">
+
+
+                            <div class="form-group">
+                                <label>Batch </label>
+                                <select class="form-control" name="batch" id="batch">
+                                     <option selected disabled>Choose a Batch</option>
+                                    {% for batch in batch_list %}
+                                        <option value="{{ batch }}">{{ batch }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                             <div class="form-group">
+                                <label>Subject</label>
+                                <select class="form-control" name="subject" id="subject">
+                                    <option selected disabled>-- choose a batch first--</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Lab Class Weight </label>
+                                <input type="number" class="form-control" name="lab_class">
+                            </div>
+
+
+                            <div class="form-group">
+                                <label>Lecture Class Weight </label>
+                                <input type="number" class="form-control" name="lecture_class">
+                            </div>
+
+                        </div>
+                        <!-- /.card-body -->
+
+                        <div class="card-footer">
+                        <button type="submit" class="btn btn-primary">Add Attendance Weight</button>
+                        </div>
+                    </form>
+                    </div>
+                    <!-- /.card -->
+
+                </div>
+            </div>
+
+        </div><!-- /.container-fluid -->
+      </section>
+
+  {% endblock main_content %}
+
+{% block custom_js %}
+<script>
+$("#batch").change(function () {
+        const batch = $(this).val();  // get the selected college ID from the HTML dropdown list
+        $.ajax({                       // initialize an AJAX request
+            type: "POST",
+            url: '{% url "load_subjects_batch" %}',
+            data: {
+                'batch': batch
+                 }
+             })
+             .done(function(response){
+                var json_data=JSON.parse(response);
+                console.log(json_data)
+                //Displaying Subjects List
+                var div_data='';
+                for(key in json_data)
+                {
+                    div_data+="<option value='"+ json_data[key]['id'] +"'>"+ json_data[key]['name']+" </option>";
+
+                }
+                $("#subject").html(div_data);
+            })
+            .fail(function(){
+                alert("Error in Fetching Subjects.")
+            })
+        });
+  </script>
+  {% endblock custom_js %}

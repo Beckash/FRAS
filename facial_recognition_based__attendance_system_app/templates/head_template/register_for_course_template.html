@@ -1,0 +1,322 @@
+{% extends 'head_template/base_template.html' %}
+
+{% block page_title %}
+Register For Course
+{% endblock page_title %}
+
+{% block main_content %}
+{% load static %}
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Register For Course</h3>
+                    </div>
+
+                    <div class="card-body">
+                        {% csrf_token %}
+
+                        {% if messages %}
+                        <div class="form-group">
+                            <div class="col-12">
+                                {% for message in messages %}
+                                {% if message.tags == "error" %}
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    {{ message }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                {% elif message.tags == "success" %}
+                                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                    {{ message }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        <div class="form-group">
+                            <label>Department</label>
+                            <select class="form-control" name="department" id="department">
+                                <option value="{{ head.department_id.id }}">{{ head.department_id.department_name }}
+                                </option>
+                                {% for department in departments %}
+                                {% if department.id != head.department_id.id %}
+                                <option value="{{ department.id }}">{{ department.department_name }}</option>
+                                {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Curriculum Name</label>
+                            <select class="form-control" name="curricclum" id="curricclum">
+                                <option selected disabled>Choose a Curriculum</option>
+                                <option value="old">Old Curriclum</option>
+                                <option value="new">New Curriclum</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Semester</label>
+                            <select class="form-control" name="semester" id="semester">
+                                <option selected disabled>Choose a curriculum first</option>
+                                <option value="1">First Semester</option>
+                                <option value="2">Second Semester</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Section</label>
+                            <select class="form-control" name="section" id="section">
+                                {% for section in sections %}
+                                <option value="{{section}}">{{ section }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Batch</label>
+                            <select class="form-control" name="batch" id="batch">
+                                <option selected disabled>Choose a Semester first</option>
+                                {% for batchinfo in batchinfos %}
+                                <option value="{{batchinfo}}">{{ batchinfo }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Subject</label>
+                            <div id="subject" class="p-3 border rounded" style="min-height: 50px; background: #f9f9f9;">
+                                <span class="text-muted small">Select a Batch to load subjects...</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Students</label>
+                            <div id="student" class="p-3 border rounded" style="min-height: 50px; background: #f9f9f9;">
+                                <span class="text-muted small">Select a Batch to load students...</span>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="card-footer">
+                        <button type="button" class="btn btn-primary" id="save_data">Register for Course</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock main_content %}
+
+{% block custom_js %}
+<script>
+    $(document).ready(function () {
+
+        // 1. CSRF Setup
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        const csrftoken = getCookie('csrftoken');
+        $.ajaxSetup({
+            beforeSend: function (xhr, settings) {
+                if (!/^(GET|HEAD|OPTIONS|TRACE)$/.test(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            }
+        });
+
+        // 2. Fetch Data on Batch Change
+        // Using .off().on() prevents duplicate event bindings
+        $("#batch").off('change').on('change', function (e) {
+            e.preventDefault(); // Stop any form submission
+
+            // Get values
+            const batch = $(this).val();
+            const curricclum = $("#curricclum").val();
+            const department = $("#department").val();
+            const section = $("#section").val();
+            const semester = $("#semester").val();
+
+            // Safety check
+            if (!batch) { return; }
+
+            // Set Loading State
+            $("#subject").html("<div class='text-info'><i class='fas fa-spinner fa-spin'></i> Loading Subjects...</div>");
+            $("#student").html("<div class='text-info'><i class='fas fa-spinner fa-spin'></i> Loading Students...</div>");
+
+            // --- AJAX 1: Fetch Subjects ---
+            $.ajax({
+                type: "POST",
+                url: '{% url "head_load_subjects" %}',
+                data: {
+                    'curricclum': curricclum,
+                    'semester': semester,
+                    'batch': batch
+                },
+                dataType: "json", // Force response to be treated as JSON
+            })
+                .done(function (response) {
+                    console.log("Subjects Raw Response:", response);
+
+                    // Parse response if strictly needed (dataType usually handles it)
+                    let json_data = response;
+                    if (typeof response === 'string') {
+                        try {
+                            json_data = JSON.parse(response);
+                        } catch (e) {
+                            console.error("JSON Parse Error:", e);
+                            $("#subject").html("<div class='text-danger'>Error parsing data.</div>");
+                            return;
+                        }
+                    }
+
+                    // Check if data exists
+                    const dataLength = (Array.isArray(json_data)) ? json_data.length : Object.keys(json_data).length;
+
+                    if (dataLength > 0) {
+                        let html_content = "<div class='row'>";
+                        $.each(json_data, function (key, value) {
+                            // Ensure ID and Name exist
+                            if (value.id && value.name) {
+                                html_content += `
+                            <div class='col-lg-3 col-md-4 col-sm-6'>
+                                <div class='form-check'>
+                                    <input type='checkbox' checked='checked' name='subject[]' value='${value.id}' class='form-check-input' id='sub_${value.id}' />
+                                    <label class='form-check-label' for='sub_${value.id}'>${value.name}</label>
+                                </div>
+                            </div>`;
+                            }
+                        });
+                        html_content += "</div>";
+
+                        // Insert HTML
+                        $("#subject").html(html_content);
+                    } else {
+                        $("#subject").html("<div class='text-danger'>No Subjects found.</div>");
+                    }
+                })
+                .fail(function (xhr, status, error) {
+                    console.error("Subject Ajax Error:", error);
+                    $("#subject").html("<div class='text-danger'>Failed to fetch subjects.</div>");
+                });
+
+            // --- AJAX 2: Fetch Students ---
+            $.ajax({
+                type: "POST",
+                url: '{% url "head_get_students" %}',
+                data: {
+                    'department': department,
+                    'section': section,
+                    'batch': batch
+                },
+                dataType: "json",
+            })
+                .done(function (response) {
+                    console.log("Students Raw Response:", response);
+
+                    let json_data = response;
+                    if (typeof response === 'string') {
+                        try {
+                            json_data = JSON.parse(response);
+                        } catch (e) {
+                            return;
+                        }
+                    }
+
+                    const dataLength = (Array.isArray(json_data)) ? json_data.length : Object.keys(json_data).length;
+
+                    if (dataLength > 0) {
+                        let html_content = "<div class='row'>";
+                        $.each(json_data, function (key, value) {
+                            if (value.id && value.name) {
+                                html_content += `
+                            <div class='col-lg-3 col-md-4 col-sm-6'>
+                                <div class='form-check'>
+                                    <input type='checkbox' checked='checked' name='student[]' value='${value.id}' class='form-check-input' id='stu_${value.id}' />
+                                    <label class='form-check-label' for='stu_${value.id}'>${value.name}</label>
+                                </div>
+                            </div>`;
+                            }
+                        });
+                        html_content += "</div>";
+                        $("#student").html(html_content);
+                    } else {
+                        $("#student").html("<div class='text-danger'>No Students found.</div>");
+                    }
+                })
+                .fail(function () {
+                    $("#student").html("<div class='text-danger'>Failed to fetch students.</div>");
+                });
+        });
+
+        // 3. Save Data Click
+        $("#save_data").click(function () {
+            $(this).attr("disabled", "disabled").text("Registering...");
+
+            const subject_list = [];
+            $("input[name='subject[]']").each(function () {
+                subject_list.push({ "id": $(this).val(), "status": $(this).is(":checked") ? 1 : 0 });
+            });
+
+            const student_list = [];
+            $("input[name='student[]']").each(function () {
+                student_list.push({ "id": $(this).val(), "status": $(this).is(":checked") ? 1 : 0 });
+            });
+
+            const data = {
+                subject: JSON.stringify(subject_list),
+                student: JSON.stringify(student_list),
+                curricclum: $("#curricclum").val(),
+                section: $("#section").val(),
+                batch: $("#batch").val(),
+                department: $("#department").val(),
+                semester: $("#semester").val()
+            };
+
+            $.ajax({
+                url: '{% url "register_for_course_save" %}',
+                type: 'POST',
+                data: data,
+            })
+                .done(function (response) {
+                    if (response == "OK") {
+                        alert("Registered Successfully!");
+                        location.reload();
+                    } else if (response == "existed") {
+                        alert("Already Registered!");
+                        location.reload();
+                    } else {
+                        alert("Failed to Register!");
+                        $("#save_data").removeAttr("disabled").text("Register for Course");
+                    }
+                })
+                .fail(function () {
+                    alert("Network Error.");
+                    $("#save_data").removeAttr("disabled").text("Register for Course");
+                });
+        });
+    });
+</script>
+{% endblock custom_js %}

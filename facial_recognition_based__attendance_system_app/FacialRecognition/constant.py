@@ -1,0 +1,17 @@
+RELU_ACTIVATION_FUNCTION = 'relu'
+SOFTMAX_ACTIVATION_FUNCTION = 'softmax'
+FACE_DATA_PATH = 'C:/Users/Hello/FR/train/yalefaces'
+FACE_DETECT_PATH = 'C:/Users/Hello/FR/photos/imagefiles/subject01.jpg'
+CELEBRITY_VGG_PATH = 'E:/Final Project/Implementation/FinalProject/dataset/yalefaces/test_set/butera/butera20.jpg'
+DROP_OUT_O_25 = 0.25
+DROP_OUT_0_50 = 0.5
+PADDING_SAME = 'same'
+NUMBER_FULLY_CONNECTED = 512
+LOSS_FUNCTION = 'categorical_crossentropy'
+METRIC_ACCURACY = 'accuracy'
+IMG_WIDTH = 320
+IMG_HEIGHT = 243
+RESNET_MODEL = 'resnet50'
+AVG_POOLING = 'avg'
+DETECTOR_FACE_DIM = 120
+IMAGENET = 'imagenet'

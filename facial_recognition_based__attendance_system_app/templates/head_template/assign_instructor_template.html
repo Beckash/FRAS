@@ -1,0 +1,174 @@
+{% extends 'head_template/base_template.html' %}
+
+{% block page_title %}
+Assign Instructor For Course
+{% endblock page_title %}
+
+{% block main_content %}
+{% load static %}
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Assign Instructor For Course</h3>
+                    </div>
+
+                    <form role="form" method="POST" action="{% url 'assign_instructor_save' %}">
+                        {% csrf_token %}
+
+                        {% if messages %}
+                        <div class="form-group">
+                            <div class="col-12">
+                                {% for message in messages %}
+                                {% if message.tags == "error" %}
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert"
+                                    style="margin-top: 10px;">
+                                    {{ message }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                {% elif message.tags == "success" %}
+                                <div class="alert alert-success alert-dismissible fade show" role="alert"
+                                    style="margin-top: 10px;">
+                                    {{ message }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                {% elif message.tags == "warning" %}
+                                <div class="alert alert-warning alert-dismissible fade show" role="alert"
+                                    style="margin-top: 10px;">
+                                    {{ message }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        <div class="card-body">
+                            <!-- BATCH FIELD -->
+                            <div class="form-group">
+                                <label>Batch</label>
+                                <select class="form-control" name="batch" id="batch" required>
+                                    <option value="" selected disabled>Choose a Batch</option>
+                                    {% for batch in batchinfos %}
+                                    <option value="{{ batch }}">{{ batch }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <!-- SECTION FIELD -->
+                            <div class="form-group">
+                                <label>Section</label>
+                                <select class="form-control" name="section" id="section" required>
+                                    <option value="" selected disabled>Choose a Section</option>
+                                    {% for section in sections %}
+                                    <option value="{{ section }}">{{ section }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <!-- SUBJECT FIELD -->
+                            <div class="form-group">
+                                <label>Subject</label>
+                                <select class="form-control" name="subject_id" id="subject" required>
+                                    <option value="" selected disabled>-- choose batch and section first --</option>
+                                </select>
+                            </div>
+
+                            <!-- CLASS TYPE -->
+                            <div class="form-group">
+                                <label>Class Type</label>
+                                <select class="form-control" name="class_type" id="class_type" required>
+                                    <option value="lecture_class">Lecture Class</option>
+                                    <option value="lab_class">Lab Class</option>
+                                    <option value="both_class">Both Class</option>
+                                </select>
+                            </div>
+
+                            <!-- INSTRUCTOR -->
+                            <div class="form-group">
+                                <label>Instructor</label>
+                                <select class="form-control" name="staff_id" required>
+                                    <option value="" selected disabled>Select Instructor</option>
+                                    {% for staff in staffs %}
+                                    <option value="{{ staff.id }}">
+                                        {{ staff.admin.first_name }} {{ staff.admin.last_name }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-primary">Assign Instructor for Course</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock main_content %}
+
+{% block custom_js %}
+<script>
+    $(document).ready(function () {
+        $("#section, #batch").change(function () {
+            var batch = $("#batch").val();
+            var section = $("#section").val();
+
+            console.log("DEBUG - Batch selected:", batch);
+            console.log("DEBUG - Section selected:", section);
+
+            if (batch && section) {
+                $("#subject").html('<option value="">Loading subjects...</option>');
+
+                $.ajax({
+                    url: "{% url 'load_subjects_section_batch' %}",
+                    type: "POST",
+                    data: {
+                        'batch': batch,
+                        'section': section,
+                        'csrfmiddlewaretoken': '{{ csrf_token }}'
+                    },
+                    success: function (data) {
+                        console.log("DEBUG - AJAX Success:", data);
+
+                        if (data.error) {
+                            $("#subject").html('<option value="">Error: ' + data.error + '</option>');
+                            return;
+                        }
+
+                        if (data.length === 0) {
+                            $("#subject").html('<option value="">No subjects found for this batch/section</option>');
+                            return;
+                        }
+
+                        var options = '<option value="" selected disabled>-- choose a subject --</option>';
+                        data.forEach(function (item) {
+                            options += '<option value="' + item.id + '">' + item.name + '</option>';
+                        });
+                        $("#subject").html(options);
+                    },
+                    error: function (xhr, status, error) {
+                        console.log("DEBUG - AJAX Error:", status, error);
+                        console.log("DEBUG - Response:", xhr.responseText);
+                        $("#subject").html('<option value="">Error loading subjects</option>');
+                    }
+                });
+            } else {
+                $("#subject").html('<option value="" selected disabled>-- choose batch and section first --</option>');
+            }
+        });
+    });
+</script>
+{% endblock custom_js %}

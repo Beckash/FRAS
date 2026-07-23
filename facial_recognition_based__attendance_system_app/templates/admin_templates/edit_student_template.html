@@ -1,0 +1,52 @@
+{% extends 'admin_templates/base_template.html' %}
+{% block page_title %} Edit Student | #ID : {{ id }} {% endblock page_title %}
+
+{% block main_content %}
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Edit Student</h3>
+                    </div>
+
+                    {% comment %} 1. Simple URL without the ID parameter {% endcomment %}
+                    {% url 'edit_student_save' as action_path %}
+
+                    <form role="form" action="{{ action_path }}" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <div class="card-body">
+                            {% comment %} 2. HIDDEN ID FIELD: This sends the ID to your view via POST {% endcomment %}
+                            <input type="hidden" name="student_id" value="{{ id }}">
+
+                            {% if messages %}
+                            {% for message in messages %}
+                            <div
+                                class="alert alert-{% if message.tags == 'error' %}danger{% else %}success{% endif %} alert-dismissible fade show">
+                                {{ message }}
+                                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                            </div>
+                            {% endfor %}
+                            {% endif %}
+
+                            {% for field in form %}
+                            <div class="form-group">
+                                {{ field.label_tag }}
+                                {{ field }}
+                                {{ field.errors }}
+                            </div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-primary">Update Student</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock main_content %}

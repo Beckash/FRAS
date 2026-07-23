@@ -1,0 +1,8 @@
+# Ignore virtual environments and archives
+ai_venv.zip
+*.zip
+venv/
+env/
+
+# Ignore large model files (manage via LFS or drive link instead)
+*.h5

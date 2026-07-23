@@ -1,0 +1,177 @@
+{% extends 'head_template/base_template.html' %}
+
+{% block page_title %}
+Edit Assign Instructor For Course Page
+{% endblock page_title %}
+
+{% block main_content %}
+{% load static %}
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Edit Assign Instructor For Course</h3>
+                    </div>
+
+                    <form role="form" method="POST" action="{% url 'edit_assign_instructor_save' %}">
+                        {% csrf_token %}
+
+                        <!-- HIDDEN FIELD FOR ASSIGNMENT ID -->
+                        <input type="hidden" name="assign_instructor_id" value="{{ assign_instructor.id }}">
+
+                        {% if messages %}
+                        <div class="form-group">
+                            <div class="col-12">
+                                {% for message in messages %}
+                                {% if message.tags == "error" %}
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert"
+                                    style="margin-top: 10px;">
+                                    {{ message }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                {% elif message.tags == "success" %}
+                                <div class="alert alert-success alert-dismissible fade show" role="alert"
+                                    style="margin-top: 10px;">
+                                    {{ message }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        <div class="card-body">
+                            <!-- BATCH FIELD -->
+                            <div class="form-group">
+                                <label>Batch</label>
+                                <select class="form-control" name="batch" id="batch" required>
+                                    {% for batch in batchinfos %}
+                                    <option value="{{ batch }}" {% if batch==assign_instructor.batch|stringformat:"s"
+                                        %}selected{% endif %}>
+                                        {{ batch }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <!-- SECTION FIELD -->
+                            <div class="form-group">
+                                <label>Section</label>
+                                <select class="form-control" name="section" id="section" required>
+                                    {% for section in sections %}
+                                    <option value="{{ section }}" {% if section==assign_instructor.section %}selected{%
+                                        endif %}>
+                                        {{ section }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <!-- SUBJECT FIELD -->
+                            <div class="form-group">
+                                <label>Subject</label>
+                                <select class="form-control" name="subject_id" id="subject" required>
+                                    <option value="{{ assign_instructor.subject_id.id }}" selected>
+                                        {{ assign_instructor.subject_id.subject_code }} - {{
+                                        assign_instructor.subject_id.subject_name }}
+                                    </option>
+                                </select>
+                            </div>
+
+                            <!-- CLASS TYPE FIELD -->
+                            <div class="form-group">
+                                <label>Class Type</label>
+                                <select class="form-control" name="class_type" id="class_type" required>
+                                    <option value="lecture_class" {% if assign_instructor.class_type=="lecture_class"
+                                        %}selected{% endif %}>
+                                        Lecture Class
+                                    </option>
+                                    <option value="lab_class" {% if assign_instructor.class_type=="lab_class"
+                                        %}selected{% endif %}>
+                                        Lab Class
+                                    </option>
+                                    <option value="both_class" {% if assign_instructor.class_type=="both_class"
+                                        %}selected{% endif %}>
+                                        Both Class
+                                    </option>
+                                </select>
+                            </div>
+
+                            <!-- INSTRUCTOR FIELD -->
+                            <div class="form-group">
+                                <label>Instructor</label>
+                                <select class="form-control" name="staff_id" required>
+                                    {% for staff in staffs %}
+                                    <option value="{{ staff.id }}" {% if staff.id==assign_instructor.staff_id.id
+                                        %}selected{% endif %}>
+                                        {{ staff.admin.first_name }} {{ staff.admin.last_name }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-primary">Update Assignment</button>
+                            <a href="{% url 'manage_assign_instructor' %}" class="btn btn-secondary">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock main_content %}
+
+{% block custom_js %}
+<script>
+    $(document).ready(function () {
+        function loadSubjects() {
+            var batch = $("#batch").val();
+            var section = $("#section").val();
+
+            if (batch && section) {
+                $.ajax({
+                    url: "{% url 'load_subjects_section_batch' %}",
+                    type: "POST",
+                    data: {
+                        'batch': batch,
+                        'section': section,
+                        'csrfmiddlewaretoken': '{{ csrf_token }}'
+                    },
+                    success: function (data) {
+                        var options = '<option value="" disabled>-- Select Subject --</option>';
+                        var currentSubjectId = "{{ assign_instructor.subject_id.id }}";
+
+                        data.forEach(function (item) {
+                            var selected = (item.id == currentSubjectId) ? 'selected' : '';
+                            options += '<option value="' + item.id + '" ' + selected + '>' + item.name + '</option>';
+                        });
+
+                        $("#subject").html(options);
+                    },
+                    error: function () {
+                        $("#subject").html('<option value="">Error loading subjects</option>');
+                    }
+                });
+            }
+        }
+
+        $("#batch, #section").change(function () {
+            loadSubjects();
+        });
+
+        {% if assign_instructor.batch and assign_instructor.section %}
+        loadSubjects();
+        {% endif %}
+    });
+</script>
+{% endblock custom_js %}

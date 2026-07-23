@@ -1,0 +1,515 @@
+﻿{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="navbar navbar-inverse navbar-fixed-top " id="menu">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#"><img class="logo-custom img-rounded"
+                    src="{% static 'dist/img/LogoFRAMS.png' %}" alt="" /> Facial Recognition Based Student
+                Attendance
+                System</a>
+        </div>
+        <div class="navbar-collapse collapse move-me">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#home">HOME</a></li>
+                <li><a href="#features-sec">FEATURES</a></li>
+                <li><a href="#faculty-sec">DEVELOPER</a></li>
+                <li><a href="#contact-sec">CONTACT</a></li>
+                <li><a href="{% url 'login' %}">LOGIN</a></li>
+            </ul>
+        </div>
+
+    </div>
+</div>
+<!--NAVBAR SECTION END-->
+<div class="home-sec" id="home">
+    <div class="overlay">
+        <div class="container">
+            <div class="row text-center ">
+
+                <div class="col-lg-12  col-md-12 col-sm-12">
+
+                    <div class="flexslider set-flexi" id="main-section">
+                        <ul class="slides move-me">
+                            <!-- Slider 01 -->
+                            <li>
+                                <h3>Facial Recognition Based Attendance Management System</h3>
+                                <p>
+                                    F.R.A.S is Facial Recognition Based Student Attendance Management System which aims
+                                    to minimize paperwork and save
+                                    time by automating the traditional way of taking attendance. It tracks the
+                                    attendance of the students using Facial Recognition Model.
+                                    It provides an user friendly interface for the users and enable them to perform
+                                    their desired attendance related tasks according to their role.
+                                    It is developed using Django Python Framework and Deep Learning Models.
+                                </p>
+                                <h1>THE UNIQUE METHOD</h1>
+                                <!-- <a href="" class="btn btn-default btn-lg">
+                                    Read More
+                                </a> -->
+                                <a href="#features-sec" class="btn btn-success btn-lg">
+                                    FEATURE LIST
+                                </a>
+                            </li>
+                            <!-- End Slider 01 -->
+
+                            <!-- Slider 02 -->
+                            <li>
+                                <h3>Facial Recognition based Attendance System</h3>
+                                <p>
+                                    F.R.A.S is Facial Recognition Based Student Attendance Management System which aims
+                                    to minimize paperwork and save
+                                    time by automating the traditional way of taking attendance. It tracks the
+                                    attendance of the students using Facial Recognition Model.
+                                    It provides an user friendly interface for the users and enable them to perform
+                                    their desired attendance related tasks according to their role.
+                                    It is developed using Django Python Framework and Deep Learning Models.
+                                </p>
+                                <h1>UNMATCHED APPROACH</h1>
+
+                                <a href="#features-sec" class="btn btn-danger btn-lg">
+                                    FEATURE LIST
+                                </a>
+                            </li>
+                            <!-- End Slider 02 -->
+
+                            <!-- Slider 03 -->
+                            <li>
+                                <h3>Student Attendance Management System</h3>
+                                <p>
+                                    F.R.A.S is Facial Recognition Based Student Attendance Management System which aims
+                                    to minimize paperwork and save
+                                    time by automating the traditional way of taking attendance. It tracks the
+                                    attendance of the students using Facial Recognition Model.
+                                    It provides an user friendly interface for the users and enable them to perform
+                                    their desired attendance related tasks according to their role.
+                                    It is developed using Django Python Framework and Deep Learning Models.
+                                </p>
+                                <h1>LEADING INNOVATION</h1>
+
+
+                                <a href="#features-sec" class="btn btn-info btn-lg">
+                                    FEATURE LIST
+                                </a>
+                            </li>
+                            <!-- End Slider 03 -->
+                        </ul>
+                    </div>
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+<!--HOME SECTION END-->
+<div class="tag-line">
+    <div class="container">
+        <div class="row  text-center">
+
+            <div class="col-lg-12  col-md-12 col-sm-12">
+
+                <h2 data-scroll-reveal="enter from the bottom after 0.1s"><i class="fa fa-circle-o-notch"></i> WELCOME
+                    TO F.R.A.S <i class="fa fa-circle-o-notch"></i></h2>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!--HOME SECTION TAG LINE END-->
+<div id="features-sec" class="container set-pad">
+    <div class="row text-center">
+        <div class="col-lg-8 col-lg-offset-2 col-md-8 col-sm-8 col-md-offset-2 col-sm-offset-2">
+            <h1 data-scroll-reveal="enter from the bottom after 0.2s" class="header-line">FEATURE LIST </h1>
+            <p data-scroll-reveal="enter from the bottom after 0.3s">
+                Facial Recognition based Student Attendance System has the following features.
+            </p>
+        </div>
+
+    </div>
+    <!--/.HEADER LINE END-->
+
+
+    <div class="row">
+
+
+        <div class="col-lg-4  col-md-4 col-sm-4" data-scroll-reveal="enter from the bottom after 0.4s">
+            <div class="about-div">
+                <!--                     <i class="fa fa-bolt fa-4x icon-round-border" ></i>-->
+                <h3>Data Storage</h3>
+                <hr />
+                <!--                       <hr />-->
+                <p>
+                    With a single sign-on, faculties can access their own self-service accounts, along with a lot of
+                    other data in one place.
+                </p>
+                <!--               <a href="#" class="btn btn-info btn-set"  >See More</a>-->
+            </div>
+        </div>
+        <div class="col-lg-4  col-md-4 col-sm-4" data-scroll-reveal="enter from the bottom after 0.5s">
+            <div class="about-div">
+                <!--                     <i class="fa fa-bolt fa-4x icon-round-border" ></i>-->
+                <h3>Automated Reports</h3>
+                <hr />
+                <!--                       <hr />-->
+                <p>
+                    Quite often teachers have to access the attendance reports of their students on an urgent basis.
+                    Using attendance monitoring system you basically make sure that reports can be created with just a
+                    click of your button.
+                </p>
+                <!--               <a href="#" class="btn btn-info btn-set"  >See More</a>-->
+            </div>
+        </div>
+        <div class="col-lg-4  col-md-4 col-sm-4" data-scroll-reveal="enter from the bottom after 0.6s">
+            <div class="about-div">
+                <!--                     <i class="fa fa-magic fa-4x icon-round-border" ></i>-->
+                <h3>Fast & Effective</h3>
+                <hr />
+                <!--                       <hr />-->
+                <p>
+                    Adopting automated attendance monitoring system will help save time and money by eliminating a great
+                    deal of manual processes involved in attendance and leave entry and calculating hours attended.
+                </p>
+                <!--               <a href="#" class="btn btn-info btn-set"  >See More</a>-->
+
+            </div>
+        </div>
+
+
+    </div>
+</div>
+<!-- FEATURES SECTION END-->
+<div id="faculty-sec">
+    <div class="container set-pad">
+        <div class="row text-center">
+            <div class="col-lg-8 col-lg-offset-2 col-md-8 col-sm-8 col-md-offset-2 col-sm-offset-2">
+                <h1 data-scroll-reveal="enter from the bottom after 0.1s" class="header-line">Developer</h1>
+                <p data-scroll-reveal="enter from the bottom after 0.3s">
+                    This Facial Recognition Based Student Attendance System is developed by:
+                </p>
+            </div>
+
+        </div>
+        <!--/.HEADER LINE END-->
+
+        <div class="row">
+
+
+            <div class="col-lg-4  col-md-4 col-sm-4" data-scroll-reveal="enter from the bottom after 0.4s">
+                <div class="faculty-div">
+                    <!-- <img src="" width="200" height="170" class="img-rounded" /> -->
+                    <li>Bekan Shiferaw</li>
+                    <li>Olyad Gebisa</li>
+                    <li>Robe Mulugeta</li>
+                    <li>Eyob Getachew</li>
+                    <li>Meti Jifara</li>
+
+
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!--     FACULTY SECTION END-->
+<!--      <div id="course-sec" class="container set-pad">-->
+<!--      </div>-->
+
+
+<!--               FACULTY SECTION END-->
+<!--      <div id="course-sec" class="container set-pad">-->
+<!--           {% url 'login' as login %}-->
+<!--         <iframe src="{{ login }}" title="S.A.M.S"></iframe>-->
+<!--<div class="limiter" id="limiter">-->
+<!--		<div class="container-login100" style="background-image: url('images/bg-01.jpg');">-->
+<!--			<div class="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-54">-->
+<!--				<form class="login100-form validate-form">-->
+<!--					<span class="login100-form-title p-b-49">-->
+<!--						Login-->
+<!--					</span>-->
+
+<!--					<div class="wrap-input100 validate-input m-b-23" data-validate = "Username is reauired">-->
+<!--						<span class="label-input100">Username</span>-->
+<!--						<input class="input100" type="text" name="username" placeholder="Type your username">-->
+<!--						<span class="focus-input100" data-symbol="&#xf206;"></span>-->
+<!--					</div>-->
+
+<!--					<div class="wrap-input100 validate-input" data-validate="Password is required">-->
+<!--						<span class="label-input100">Password</span>-->
+<!--						<input class="input100" type="password" name="pass" placeholder="Type your password">-->
+<!--						<span class="focus-input100" data-symbol="&#xf190;"></span>-->
+<!--					</div>-->
+
+<!--					<div class="text-right p-t-8 p-b-31">-->
+<!--						<a href="#">-->
+<!--							Forgot password?-->
+<!--						</a>-->
+<!--					</div>-->
+
+<!--					<div class="container-login100-form-btn">-->
+<!--						<div class="wrap-login100-form-btn">-->
+<!--							<div class="login100-form-bgbtn"></div>-->
+<!--							<button class="login100-form-btn">-->
+<!--								Login-->
+<!--							</button>-->
+<!--						</div>-->
+<!--					</div>-->
+
+<!--					<div class="txt1 text-center p-t-54 p-b-20">-->
+<!--						<span>-->
+<!--							Or Sign Up Using-->
+<!--						</span>-->
+<!--					</div>-->
+
+<!--					<div class="flex-c-m">-->
+<!--						<a href="#" class="login100-social-item bg1">-->
+<!--							<i class="fa fa-facebook"></i>-->
+<!--						</a>-->
+
+<!--						<a href="#" class="login100-social-item bg2">-->
+<!--							<i class="fa fa-twitter"></i>-->
+<!--						</a>-->
+
+<!--						<a href="#" class="login100-social-item bg3">-->
+<!--							<i class="fa fa-google"></i>-->
+<!--						</a>-->
+<!--					</div>-->
+
+<!--					<div class="flex-col-c p-t-155">-->
+<!--						<span class="txt1 p-b-17">-->
+<!--							Or Sign Up Using-->
+<!--						</span>-->
+
+<!--						<a href="#" class="txt2">-->
+<!--							Sign Up-->
+<!--						</a>-->
+<!--					</div>-->
+<!--				</form>-->
+<!--			</div>-->
+<!--		</div>-->
+<!--	</div>-->
+
+
+<!--	<div id="dropDownSelect1"></div>-->
+<!-- /.login-box -->
+
+<!--             </div>-->
+<!--       COURSES SECTION END-->
+
+<!--             </div>-->
+<div id="contact-sec">
+    <div class="overlay">
+        <div class="container set-pad">
+            <div class="row text-center">
+                <div class="col-lg-8 col-lg-offset-2 col-md-8 col-sm-8 col-md-offset-2 col-sm-offset-2">
+                    <h1 data-scroll-reveal="enter from the bottom after 0.1s" class="header-line">CONTACT US </h1>
+                    <p data-scroll-reveal="enter from the bottom after 0.3s">
+                        Drop us a message here, we will respond as soon as possible.
+                    </p>
+                </div>
+            </div>
+            <!--/.HEADER LINE END-->
+            <div class="row set-row-pad" data-scroll-reveal="enter from the bottom after 0.5s">
+
+
+                <div class="col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2">
+                    <form role="form" method="POST" action="{% url 'contact' %}">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <input type="text" class="form-control " name="name" required="required"
+                                placeholder="Your Name" id="name" />
+                            <h5 id="firstcheck" style="color: red;">
+                                **First name is missing
+                            </h5>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" class="form-control " name="email" required="required"
+                                placeholder="Your Email" id="email" />
+                            <small id="emailvalid" class="form-text
+                                        text-muted invalid-feedback">
+                                Your email must be a valid email
+                            </small>
+                        </div>
+                        <div class="form-group">
+                            <textarea name="message" required="required" class="form-control" style="min-height: 150px;"
+                                placeholder="Message" id="message"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-info btn-block btn-lg" id="submit">SUBMIT REQUEST
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row set-row-pad">
+        <div class="col-lg-4 col-md-4 col-sm-4   col-lg-offset-1 col-md-offset-1 col-sm-offset-1 "
+            data-scroll-reveal="enter from the bottom after 0.4s">
+
+            <h2><strong>Our Location </strong></h2>
+            <hr />
+            <div>
+                <h4>Ambo</h4>
+                <h4>Oromia,Ethiopia</h4>
+                <h4><strong>Call:</strong> +251989210643 </h4>
+                <h4><strong>Email: </strong>facerecognition@gmail.com</h4>
+            </div>
+
+
+        </div>
+        <!-- <div class="col-lg-4 col-md-4 col-sm-4   col-lg-offset-1 col-md-offset-1 col-sm-offset-1"
+            data-scroll-reveal="enter from the bottom after 0.4s">
+
+            <h2><strong>Social Conectivity </strong></h2>
+            <hr />
+            <div>
+                <a href="#"> <img src="{% static 'assets/img/Social/facebook.png' %}" alt="" /> </a>
+                <a href="#"> <img src="{% static 'assets/img/Social/google-plus.png' %}" alt="" /></a>
+                <a href="#"> <img src="{% static 'assets/img/Social/twitter.png' %}" alt="" /></a>
+            </div>
+        </div> -->
+
+
+    </div>
+</div>
+<!-- CONTACT SECTION END-->
+<div id="footer">
+    Copyright &copy; {% now "Y" %}, B.O.R.E.M | All Rights Reserved |
+</div>
+{% endblock %}
+{% block custom_js %}
+<script>
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let cookie of cookies) {
+                cookie = cookie.trim();
+                if (cookie.startsWith(name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    const csrftoken = getCookie('csrftoken');
+
+    // Save Attendance Data to Database
+    $("#submit").click(function () {
+
+        //Disabling the Button while data is being saved in Server
+        $(this).attr("disabled", "disabled")
+        $(this).text("Registering Data...")
+
+        var name = $("#name").val();
+        var email = $("#email").val();
+        var message = $("#message").val();
+
+
+        // Registering comments into Database
+
+        $.ajax({
+            url: '{% url "contact" %}',
+            type: 'POST',
+            data: {
+                name: name,
+                email: email,
+                message: message
+            },
+            headers: {
+                'X-CSRFToken': csrftoken  // ✅ This fixes CSRF errors
+            },
+        })
+            .done(function (response) {
+
+                if (response == "ok") {
+                    alert("Thank you for your support!")
+                }
+                else {
+                    alert("Sorry, there is some error!")
+                }
+                location.reload()
+
+                //console.log(response)
+            })
+
+            .fail(function () {
+                alert("Sorry, there is some error!")
+            })
+    });
+
+
+    // Document is ready
+    $(document).ready(function () {
+
+        // Validate First Name
+        let firstnameError = true;
+        $('#firstcheck').hide();
+        $('#name').keyup(function () {
+            validateFirstname();
+        });
+        function validateFirstname() {
+            let firstname = $('#name').val();
+            var expr = /^[a-zA-Z ]{3,20}$/;
+            if (firstname.length == '') {
+                $('#firstcheck').show();
+                firstnameError = false;
+                return false;
+            }
+            else if (!expr.test(firstname)) {
+                $('#firstcheck').show()
+                $('#firstcheck').html
+                    ("**Only Alphabets is allowed.");
+                firstnameError = false;
+                return false;
+            }
+            else {
+                $('#firstcheck').hide();
+            }
+        }
+        // Validate Email
+        const email_input = document.getElementById('email');
+        email_input.addEventListener('blur', () => {
+            let regex = /^([_\-\.0-9a-zA-Z]+)@([_\-\.0-9a-zA-Z]+)\.([a-zA-Z]){2,7}$/;
+            let s = email_input.value;
+            if (regex.test(s)) {
+                email_input.classList.remove(
+                    'is-invalid');
+                emailError = true;
+            }
+            else {
+                email_input.classList.add(
+                    'is-invalid');
+                emailError = false;
+            }
+        })
+        // Submit button
+        $('#submitbtn').click(function () {
+            validateEmail();
+            validateFirstname();
+            validateLastname();
+            if ((firstnameError == true) &&
+                (emailError == true)) {
+                return true;
+            } else {
+                return false;
+            }
+        });
+    });
+
+</script>
+{% endblock custom_js %}

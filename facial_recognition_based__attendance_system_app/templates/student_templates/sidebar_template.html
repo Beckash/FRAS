@@ -1,0 +1,116 @@
+{% load static %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+  $(document).ready(function () {
+    $("#my_search").on("keyup", function () {
+      var value = $(this).val().toLowerCase();
+      $("#mySideBar li").filter(function () {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+      });
+    });
+  });
+</script>
+
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+  <!-- Brand Logo -->
+  <a href="{% url 'student_home' %}" class="brand-link">
+    <img src="{% static 'dist/img/logo==.png' %}" alt="Company Logo" class="brand-image img-circle elevation-3"
+      style="opacity: .8">
+    <span class="brand-text font-weight-light">FRAMS</span>
+  </a>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <!-- Sidebar user panel (optional) -->
+    <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+      <div class="image">
+        <img src="{% static 'dist/img/add=.png' %}" class="img-circle elevation-2" alt="User Image">
+      </div>
+      <div class="info">
+        <a href="{% url 'student_profile' %}" class="d-block">{{ user.first_name }} {{ user.last_name }}</a>
+      </div>
+    </div>
+
+    <form class="form-inline">
+      <div class="input-group">
+        <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search"
+          id="my_search">
+        <div class="input-group-append">
+          <button class="btn btn-sidebar" type="submit">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+      </div>
+    </form>
+    <!-- Sidebar Menu -->
+    <nav class="mt-2">
+
+      <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false"
+        id="mySideBar">
+        <!-- Add icons to the links using the .nav-icon class
+                with font-awesome or any other icon font library -->
+
+        <li class="nav-item">
+          {% url 'student_home' as student_home %}
+          <a href="{{ student_home }}" class="nav-link {% if request.path == student_home %} active {% endif %}">
+            <i class="nav-icon fas fa-tachometer-alt"></i>
+            <p>
+              Home
+              {% comment %} <span class="right badge badge-danger">New</span> {% endcomment %}
+            </p>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          {% url 'student_view_attendance' as student_view_attendance %}
+          <a href="{{ student_view_attendance }}"
+            class="nav-link {% if request.path == student_view_attendance %} active {% endif %}">
+            <i class="nav-icon fas  fa-eye"></i>
+            <p>
+              View Attendance
+              {% comment %} <span class="right badge badge-danger">New</span> {% endcomment %}
+            </p>
+          </a>
+        </li>
+
+        <!--li class="nav-item">
+              {% url 'student_view_result' as student_view_result %}
+              <a href="{{ student_view_result }}" class="nav-link {% if request.path == student_view_result %} active {% endif %}">
+                <i class="nav-icon fas fa-tasks"></i>
+                <p>
+                  View Result
+                  {% comment %} <span class="right badge badge-danger">New</span> {% endcomment %}
+                </p>
+              </a>
+            </li-->
+
+        <li class="nav-item">
+          {% url 'student_apply_leave' as student_apply_leave %}
+          <a href="{{ student_apply_leave }}"
+            class="nav-link {% if request.path == student_apply_leave %} active {% endif %}">
+            <i class="nav-icon fas fa-envelope-open-text"></i>
+            <p>
+              Apply for Leave
+              {% comment %} <span class="right badge badge-danger">New</span> {% endcomment %}
+            </p>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          {% url 'student_feedback' as student_feedback %}
+          <a href="{{ student_feedback }}"
+            class="nav-link {% if request.path == student_feedback %} active {% endif %}">
+            <i class="nav-icon fas fa-comments"></i>
+            <p>
+              Send Feedback
+              {% comment %} <span class="right badge badge-danger">New</span> {% endcomment %}
+            </p>
+          </a>
+        </li>
+
+      </ul>
+    </nav>
+    <!-- /.sidebar-menu -->
+  </div>
+  <!-- /.sidebar -->
+</aside>

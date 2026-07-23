@@ -1,0 +1,556 @@
+{% extends 'admin_templates/base_template.html' %}
+
+{% block page_title %}
+    View Attendance Data
+{% endblock page_title %}
+
+{% block main_content %}
+
+{% load static %}
+
+<section class="content">
+        <div class="container-fluid">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- general form elements -->
+                    <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">View Attendance</h3>
+                    </div>
+                    <!-- /.card-header -->
+
+                                {% comment %} Display Messages {% endcomment %}
+                                {% if messages %}
+                                <div class="form-group">
+                                <div class="col-12">
+                                    {% for message in messages %}
+                                    {% if message.tags == "error" %}
+                                        <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                                        {{ message }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        </div>
+                                    {% elif message.tags == "success" %}
+                                        <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                                        {{ message }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        </div>
+                                    {% endif %}
+                                    {% endfor %}
+                                </div>
+                                </div>
+                                {% endif %}
+                            
+                        <form method="POST" action="{% url 'student_view_attendance_post' %}">
+                        {% csrf_token %}
+
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label>Department </label>
+                                <select class="form-control" name="department" id="department">
+                                    <option selected disabled>Choose a Department</option>
+                                    {% for department in departments %}
+                                        <option value="{{ department.id }}">{{ department.department_name }}</option>
+                                    {% endfor %}
+                                </select>
+                                <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group" id="present">
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <div class="form-group" id="absent">
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Batch </label>
+                                <select class="form-control" name="batch" id="batch">
+                                 <option selected disabled>-- choose a department first--</option>
+                                </select>
+                                   <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group" id="present_batch">
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <div class="form-group" id="absent_batch">
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Section </label>
+                                <select class="form-control" name="section" id="section">
+                                   <option selected disabled>-- choose a department first--</option>
+                                </select>
+                                   <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group" id="present_section">
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <div class="form-group" id="absent_section">
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+
+<!--                        <div class="card-footer">-->
+<!--                        <button type="submit" class="btn btn-primary" id="fetch_student">Fetch Attendance</button>-->
+<!--                        </div>-->
+
+<!--                        {% comment %} Displaying Students Here {% endcomment %}-->
+
+                         <div class="form-group">
+                                <div class="alert alert-danger" id="error_attendance" style="display:none;">
+
+                                </div>
+
+                                <div class="alert alert-success" id="success_attendance" style="display:none;">
+
+                                </div>
+                            </div>
+                            <div class="card-footer" id="student_data">
+                        </div>
+
+                    </div>
+
+                    </form>
+                    <!-- /.card -->
+
+                </div>
+            </div>
+
+        </div><!-- /.container-fluid -->
+      </section>
+
+  {% endblock main_content %}
+{% block custom_js %}
+<script>
+$("#department").change(function () {
+        div_data_initial = ''
+        $("#present_batch").html(div_data_initial);
+        $("#absent_batch").html(div_data_initial);
+        $("#present_section").html(div_data_initial);
+        $("#absent_section").html(div_data_initial);
+        const department = $(this).val();
+        var batch = $("#batch").val();
+        var section = $("#section").val();
+        var start_date = $("#start_date").val();
+        var end_date = $("#end_date").val();
+        $.ajax({                       // initialize an AJAX request
+            type: "POST",
+            url: '{% url "load_batches" %}',
+            data: {
+                'department': department,
+                 }
+             })
+
+             .done(function(response){
+                var json_data=JSON.parse(response);
+                console.log(json_data)
+                //Displaying Batches List
+                var div_data='';
+                 div_data+='<option selected disabled>Choose a Batch</option>';
+                for(key in json_data)
+                {
+                    div_data+="<option value='"+ json_data[key]['id'] +"'>"+ json_data[key]['batch']+" </option>";
+
+                }
+                $("#batch").html(div_data);
+
+            })
+            .fail(function(){
+                alert("Error in Fetching Batches.")
+            })
+
+            $.ajax({                       // initialize an AJAX request
+            type: "POST",
+            url: '{% url "load_sections" %}',
+            data: {
+                'department': department,
+                 }
+             })
+             .done(function(response){
+                var json_data=JSON.parse(response);
+                console.log(json_data)
+                //Displaying Sections List
+                var div_data='';
+                   div_data+='<option selected disabled>Choose a Batch then Section</option>';
+                for(key in json_data)
+                {
+                    div_data+="<option value='"+ json_data[key]['id'] +"'>"+ json_data[key]['section']+" </option>";
+
+                }
+                $("#section").html(div_data);
+
+            })
+            .fail(function(){
+                alert("Error in Fetching Sections.")
+            })
+    // Department_attendance
+
+           $.ajax({                       // initialize an AJAX request
+            type: "POST",
+            url: '{% url "load_attendance_department" %}',
+            data: {
+                'department': department,
+                'start_date': start_date,
+                'end_date': end_date,
+                 }
+             })
+             .done(function(response){
+                var json_data=JSON.parse(response);
+                console.log(json_data)
+                //Displaying absent and present List
+                var div_data_present='';
+                var div_data_absent='';
+
+               for(key in json_data)
+                {
+                    div_data_present+="<label> Present : "+ json_data[key]['present']+" </label>";
+                    div_data_absent+="<label> Absent : "+ json_data[key]['absent']+" </label>";
+               }
+                $("#present").html(div_data_present);
+                $("#absent").html(div_data_absent);
+
+            })
+            .fail(function(){
+                alert("Error in Fetching attendance.")
+            })
+
+ // Now Working on Fetch Student after attendance date selected
+
+
+            $.ajax({
+                url:'{% url 'admin_get_attendance_student' %}',
+                type:'POST',
+                data:{
+                'department': department,
+                'start_date': start_date,
+                'end_date': end_date,
+                },
+            })
+
+            .done(function(response){
+                var json_data=JSON.parse(response);
+                 if(json_data.length>0)
+                   {
+                    $("#error_attendance").hide();
+                    $("#attendance_block").hide();
+                    console.log(json_data)
+                    //Displaying Attendance Date Input and Students Attendance
+                    var div_data="<div class='form-group'><label>Daily Student Attendance Statistics in a Given Department</label></div>";
+                    div_data+="<div class='card-body table-responsive p-0'>";
+                    div_data+="<table class='table table-hover text-nowrap'>";
+                    div_data+="<thead>";
+                    div_data+="<tr>";
+                    div_data+="<th>No</th>";
+                    div_data+="<th>ID</th>";
+                    div_data+="<th>Full Name</th>";
+                    div_data+="<th>Subject</th>";
+                    div_data+="<th>Attendance Date</th>";
+                    div_data+="<th>Status</th>";
+                    div_data+="</tr>";
+                    div_data+="</thead>";
+                    div_data+="<tbody id='myTable'>";
+
+                    for(key in json_data)
+                    {
+                        div_data+="<tr>";
+                        div_data+="<td>"+ json_data[key]['id']+" </td> ";
+                        div_data+="<td>"+ json_data[key]['student_id']+" </td> ";
+
+                        div_data+="<td>"+ json_data[key]['name']+" </td> ";
+                        div_data+="<td>"+ json_data[key]['subject']+" </td> ";
+                        div_data+="<td>"+ json_data[key]['date']+" </td> ";
+
+                        // Displaying Present and Absent
+
+                        if(json_data[key]['status'])
+                        {
+                            div_data+="<td> Present </td>";
+                        }
+                        else
+                        {
+                            div_data+="<td> Absent </td>";
+                        }
+                        //Displaying Present and Absent Ends Here
+
+                        div_data+="</tr>";
+
+                    }
+                    div_data+="</tbody></table>";
+                    div_data+="</div>";
+                    $("#student_data").html(div_data);
+                }
+                    else
+                    {
+                        $("#student_data").html("");
+                        $("#error_attendance").html("No Attendance Data Found.");
+                        $("#error_attendance").show();
+                        $("#attendance_block").hide();
+                        $("#fetch_student_block").hide();
+                        $("#attendance_date")="" //Empty the Date Dropdown also
+                    }
+
+            })
+            .fail(function(){
+                alert("Error in Fetching Students.")
+            })
+        });
+
+       //Batch_attendance
+        $("#batch").change(function () {
+        const batch = $(this).val();
+        var department = $("#department").val();
+        var section = $("#section").val();
+        var start_date = $("#start_date").val();
+        var end_date = $("#end_date").val();
+            $.ajax({                       // initialize an AJAX request
+            type: "POST",
+            url: '{% url "load_attendance_batch" %}',
+            data: {
+                'department': department,
+                'batch': batch,
+                'start_date': start_date,
+                'end_date': end_date,
+                 }
+             })
+             .done(function(response){
+                var json_data=JSON.parse(response);
+                console.log(json_data)
+                //Displaying absent and present List
+                var div_data_present='';
+                var div_data_absent='';
+
+               for(key in json_data)
+                {
+                    div_data_present+="<label> Present : "+ json_data[key]['present']+" </label>";
+                    div_data_absent+="<label> Absent : "+ json_data[key]['absent']+" </label>";
+               }
+                $("#present_batch").html(div_data_present);
+                $("#absent_batch").html(div_data_absent);
+
+            })
+            .fail(function(){
+                alert("Error in Fetching attendance.")
+            })
+
+      // Now Working on Fetch Student after attendance date selected
+
+            $.ajax({
+                url:'{% url 'admin_get_attendance_student_batch' %}',
+                type:'POST',
+                data:{
+                'department': department,
+                'batch': batch,
+                'start_date': start_date,
+                'end_date': end_date,
+                },
+            })
+
+            .done(function(response){
+                var json_data=JSON.parse(response);
+                if(json_data.length>0)
+                   {
+                    $("#error_attendance").hide();
+                    $("#attendance_block").hide();
+                console.log(json_data)
+                //Displaying Attendance Date Input and Students Attendance
+                var div_data="<div class='form-group'><label>Daily Student Attendance Statistics in "+batch+": Batch</label></div>";
+                div_data+="<div class='card-body table-responsive p-0'>";
+                div_data+="<table class='table table-hover text-nowrap'>";
+                div_data+="<thead>";
+                div_data+="<tr>";
+                div_data+="<th>No</th>";
+                div_data+="<th>ID</th>";
+                div_data+="<th>Full Name</th>";
+                div_data+="<th>Subject</th>";
+                div_data+="<th>Attendance Date</th>";
+                div_data+="<th>Status</th>";
+                div_data+="</tr>";
+                div_data+="</thead>";
+                div_data+="<tbody id='myTable'>";
+
+                for(key in json_data)
+                {
+                    div_data+="<tr>";
+                    div_data+="<td>"+ json_data[key]['id']+" </td> ";
+                    div_data+="<td>"+ json_data[key]['student_id']+" </td> ";
+
+                    div_data+="<td>"+ json_data[key]['name']+" </td> ";
+                    div_data+="<td>"+ json_data[key]['subject']+" </td> ";
+                    div_data+="<td>"+ json_data[key]['date']+" </td> ";
+
+                    // Displaying Present and Absent
+
+                    if(json_data[key]['status'])
+                    {
+                        div_data+="<td> Present </td>";
+                    }
+                    else
+                    {
+                        div_data+="<td> Absent </td>";
+                    }
+                    //Displaying Present and Absent Ends Here
+
+                    div_data+="</tr>";
+
+                }
+                div_data+="</tbody></table>";
+                div_data+="</div>";
+                $("#student_data").html(div_data);
+                 }
+                    else
+                    {
+                        $("#student_data").html("");
+                        $("#error_attendance").html("No Attendance Data Found.");
+                        $("#error_attendance").show();
+                        $("#attendance_block").hide();
+                        $("#fetch_student_block").hide();
+                        $("#attendance_date")="" //Empty the Date Dropdown also
+                    }
+            })
+            .fail(function(){
+                alert("Error in Fetching Students.")
+            })
+             });
+
+
+
+         //   Section_attendance
+       $("#section").change(function () {
+        const section = $(this).val();
+        var batch = $("#batch").val();
+        var department = $("#department").val();
+        var start_date = $("#start_date").val();
+        var end_date = $("#end_date").val();
+         $.ajax({                       // initialize an AJAX request
+            type: "POST",
+            url: '{% url "load_attendance_section" %}',
+            data: {
+                'department': department,
+                'batch': batch,
+                'section': section,
+                'start_date': start_date,
+                'end_date': end_date,
+
+                 }
+             })
+             .done(function(response){
+                var json_data=JSON.parse(response);
+                console.log(json_data)
+                //Displaying absent and present List
+                var div_data_present='';
+                var div_data_absent='';
+
+               for(key in json_data)
+                {
+                    div_data_present+="<label> Present : "+ json_data[key]['present']+" </label>";
+                    div_data_absent+="<label> Absent : "+ json_data[key]['absent']+" </label>";
+               }
+                $("#present_section").html(div_data_present);
+                $("#absent_section").html(div_data_absent);
+
+            })
+            .fail(function(){
+                alert("Error in Fetching attendance.")
+            })
+
+                // Now Working on Fetch Student after attendance date selected
+
+
+            $.ajax({
+                url:'{% url 'admin_get_attendance_student_section' %}',
+                type:'POST',
+                data:{
+                'department': department,
+                'batch': batch,
+                'section': section,
+                'start_date': start_date,
+                'end_date': end_date,
+                },
+            })
+
+            .done(function(response){
+                var json_data=JSON.parse(response);
+                if(json_data.length>0)
+                   {
+                $("#error_attendance").hide();
+                $("#attendance_block").hide();
+                console.log(json_data)
+                //Displaying Attendance Date Input and Students Attendance
+                var div_data="<div class='form-group'><label>Daily Student Attendance Statistics in Section "+section+": </label></div>";
+                div_data+="<div class='card-body table-responsive p-0'>";
+                div_data+="<table class='table table-hover text-nowrap'>";
+                div_data+="<thead>";
+                div_data+="<tr>";
+                div_data+="<th>No</th>";
+                div_data+="<th>ID</th>";
+                div_data+="<th>Full Name</th>";
+                div_data+="<th>Subject</th>";
+                div_data+="<th>Attendance Date</th>";
+                div_data+="<th>Status</th>";
+                div_data+="</tr>";
+                div_data+="</thead>";
+                div_data+="<tbody id='myTable'>";
+
+                for(key in json_data)
+                {
+                    div_data+="<tr>";
+                    div_data+="<td>"+ json_data[key]['id']+" </td> ";
+                    div_data+="<td>"+ json_data[key]['student_id']+" </td> ";
+
+                    div_data+="<td>"+ json_data[key]['name']+" </td> ";
+                    div_data+="<td>"+ json_data[key]['subject']+" </td> ";
+                    div_data+="<td>"+ json_data[key]['date']+" </td> ";
+
+                    // Displaying Present and Absent
+
+                    if(json_data[key]['status'])
+                    {
+                        div_data+="<td> Present </td>";
+                    }
+                    else
+                    {
+                        div_data+="<td> Absent </td>";
+                    }
+                    //Displaying Present and Absent Ends Here
+
+                    div_data+="</tr>";
+
+                }
+                div_data+="</tbody></table>";
+                div_data+="</div>";
+                $("#student_data").html(div_data);
+                 }
+                    else
+                    {
+                        $("#student_data").html("");
+                        $("#error_attendance").html("No Attendance Data Found.");
+                        $("#error_attendance").show();
+                        $("#attendance_block").hide();
+                        $("#fetch_student_block").hide();
+                        $("#attendance_date")="" //Empty the Date Dropdown also
+                    }
+            })
+            .fail(function(){
+                alert("Error in Fetching Students.")
+            })
+});
+
+  </script>
+  {% endblock custom_js %}

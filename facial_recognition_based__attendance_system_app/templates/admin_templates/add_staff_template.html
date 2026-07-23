@@ -1,0 +1,341 @@
+{% extends 'admin_templates/base_template.html' %}
+
+{% block page_title %}
+    Add Staff
+{% endblock page_title %}
+
+{% block main_content %}
+
+{% load static %}
+
+<section class="content">
+        <div class="container-fluid">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- general form elements -->
+                    <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Add Staff</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <!-- form start -->
+                    <form role="form" method="POST" enctype = "multipart/form-data" action="{% url 'add_staff_save' %}">
+                        {% csrf_token %}
+
+                        
+                                {% comment %} Display Messages {% endcomment %}
+                                {% if messages %}
+                                <div class="form-group">
+                                <div class="col-12">
+                                    {% for message in messages %}
+                                    {% if message.tags == "error" %}
+                                        <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                                        {{ message }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        </div>
+                                    {% elif message.tags == "success" %}
+                                        <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                                        {{ message }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        </div>
+                                    {% endif %}
+                                    {% endfor %}
+                                </div>
+                                </div>
+                                {% endif %}
+                            
+
+                        <div class="card-body">
+
+                            <div class="form-group">
+                                <label>First Name</label>
+                                <input type="text" class="form-control" name="first_name" placeholder="First Name">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Last Name</label>
+                                <input type="text" class="form-control" name="last_name" placeholder="Last Name">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Email address</label>
+                                <input type="email" class="form-control" name="email" placeholder="Enter email" id="id_email">
+                                <small id="emailvalid" class="form-text
+                                        text-muted invalid-feedback">
+                                            Your email must be a valid email
+                                </small>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Address</label>
+                                <textarea class="form-control" name="address" placeholder="Address"></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label>College </label>
+                                <select class="form-control" name="college">
+                                    {% for college in colleges %}
+                                        <option value="{{ college.id }}">{{ college.college_name }}</option>
+                                    {% endfor %}
+                                </select>
+
+                            </div>
+
+                            <div class="form-group">
+                                <label>Department </label>
+                                <select class="form-control" name="department">
+                                    {% for department in departments %}
+                                        <option value="{{ department.id }}">{{ department.department_name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Profile Picture</label>
+                                <input type="file" class="form-control" name="profile" placeholder="Profile Picture" id="profile">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Username</label>
+                                <input type="text" class="form-control" name="username" placeholder="Username" id="id_username">
+                                <h5 id="usercheck" style="color: red;" >
+                                    **Username is missing
+                                </h5>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Password</label>
+                                <input type="password" class="form-control" name="passwordcheck" placeholder="Password" id="password">
+                                <h5 id="passcheck" style="color: red;">
+                                    **Please Fill the password
+                                </h5>
+                            </div>
+
+                            <div class="form-group">
+                                  <label for="conpassword">
+                                        Confirm Password:
+                                  </label>
+                                  <input type="password" name="password"
+                                        id="conpassword" class="form-control">
+                                  <h5 id="conpasscheck" style="color: red;">
+                                      **Password didn't match
+                                  </h5>
+                          </div>
+
+
+                        </div>
+                        <!-- /.card-body -->
+
+                        <div class="card-footer">
+                        <button type="submit" class="btn btn-primary" id="submitbtn">Add Staff</button>
+                        </div>
+                    </form>
+                    </div>
+                    <!-- /.card -->
+
+                </div>
+            </div>
+
+        </div><!-- /.container-fluid -->
+      </section>
+
+  {% endblock main_content %}
+
+    {% block custom_js %}
+    {% comment %} Checking if email and username already exists or not usin Ajax {% endcomment %}
+
+    <script>
+<!--        $(document).ready(function(){-->
+<!--            // keyup event will be triggered when user leaves keyboard-->
+<!--            $("#id_email").keyup(function(){-->
+<!--                var email = $(this).val();-->
+
+<!--                if(email!=""){-->
+<!--                    $.ajax({-->
+<!--                        url : '{% url 'check_email_exist' %}',-->
+<!--                        type : 'POST',-->
+<!--                        data : {email:email}-->
+<!--                    })-->
+<!--                    .done(function(response){-->
+<!--                        //console.log(response);-->
+
+<!--                        if(response == "True"){-->
+<!--                            $(".email_error").remove();-->
+<!--                            $("<span class='email_error' style='color: red; padding: 5px; font-weight: bold;'> Email Not Available. </span>").insertAfter("#id_email")-->
+<!--                        }-->
+<!--                        else{-->
+<!--                            $(".email_error").remove();-->
+<!--                            $("<span class='email_error' style='color: green; padding: 5px; font-weight: bold;'> Email Available. </span>").insertAfter("#id_email")-->
+<!--                        }-->
+<!--                    })-->
+
+<!--                    .fail(function(){-->
+<!--                        console.log("Failed");-->
+<!--                    })-->
+<!--                }-->
+<!--                else{-->
+<!--                    $(".email_error").remove();-->
+<!--                }-->
+<!--                -->
+<!--            })-->
+
+<!--            $("#id_username").keyup(function(){-->
+<!--                var username = $(this).val();-->
+<!--                -->
+<!--                if(username!=""){-->
+<!--                    $.ajax({-->
+<!--                        url : '{% url 'check_username_exist' %}',-->
+<!--                        type : 'POST',-->
+<!--                        data : {username:username}-->
+<!--                    })-->
+<!--                    .done(function(response){-->
+<!--                        //console.log(response);-->
+
+<!--                        if(response == "True"){-->
+<!--                            $(".username_error").remove();-->
+<!--                            $("<span class='username_error' style='color: red; padding: 5px; font-weight: bold;'> Username Not Available. </span>").insertAfter("#id_username")-->
+<!--                        }-->
+<!--                        else{-->
+<!--                            $(".username_error").remove();-->
+<!--                            $("<span class='username_error' style='color: green; padding: 5px; font-weight: bold;'> Username Available. </span>").insertAfter("#id_username")-->
+<!--                        }-->
+<!--                    })-->
+
+<!--                    .fail(function(){-->
+<!--                        console.log("Failed");-->
+<!--                    })-->
+<!--                }-->
+<!--                else{-->
+<!--                    $(".username_error").remove();-->
+<!--                }-->
+<!--                -->
+<!--            })-->
+<!--        })-->
+
+                        // Document is ready
+                $(document).ready(function () {
+
+                // Validate Username
+                    $('#usercheck').hide();
+                    let usernameError = true;
+                    $('#id_username').keyup(function () {
+                        validateUsername();
+                    });
+
+                    function validateUsername() {
+                    let usernameValue = $('#id_username').val();
+                    if (usernameValue.length == '') {
+                    $('#usercheck').show();
+                        usernameError = false;
+                        return false;
+                    }
+                    else if((usernameValue.length < 3)||
+                            (usernameValue.length > 10)) {
+                        $('#usercheck').show();
+                        $('#usercheck').html
+                ("**length of username must be between 3 and 10");
+                        usernameError = false;
+                        return false;
+                    }
+                    else {
+                        $('#usercheck').hide();
+                    }
+                    }
+
+                // Validate Email
+                    const email =
+                        document.getElementById('id_email');
+                    email.addEventListener('blur', ()=>{
+                    let regex =
+                /^([_\-\.0-9a-zA-Z]+)@([_\-\.0-9a-zA-Z]+)\.([a-zA-Z]){2,7}$/;
+                    let s = email.value;
+                    if(regex.test(s)){
+                        email.classList.remove(
+                                'is-invalid');
+                        emailError = true;
+                        }
+                        else{
+                            email.classList.add(
+                                'is-invalid');
+                            emailError = false;
+                        }
+                    })
+
+                // Validate Password
+                    $('#passcheck').hide();
+                    let passwordError = true;
+                    $('#password').keyup(function () {
+                        validatePassword();
+                    });
+                    function validatePassword() {
+                        let passwrdValue =
+                            $('#password').val();
+                        if (passwrdValue.length == '') {
+                            $('#passcheck').show();
+                            passwordError = false;
+                            return false;
+                        }
+                        if ((passwrdValue.length < 3)||
+                            (passwrdValue.length > 10)) {
+                            $('#passcheck').show();
+                            $('#passcheck').html
+                ("**length of your password must be between 3 and 10");
+                            $('#passcheck').css("color", "red");
+                            passwordError = false;
+                            return false;
+                        } else {
+                            $('#passcheck').hide();
+                        }
+                    }
+
+                // Validate Confirm Password
+                    $('#conpasscheck').hide();
+                    let confirmPasswordError = true;
+                    $('#conpassword').keyup(function () {
+                        validateConfirmPasswrd();
+                    });
+                    function validateConfirmPasswrd() {
+                        let confirmPasswordValue =
+                            $('#conpassword').val();
+                        let passwrdValue =
+                            $('#password').val();
+                        if (passwrdValue != confirmPasswordValue) {
+                            $('#conpasscheck').show();
+                            $('#conpasscheck').html(
+                                "**Password didn't Match");
+                            $('#conpasscheck').css(
+                                "color", "red");
+                            confirmPasswordError = false;
+                            return false;
+                        } else {
+                            $('#conpasscheck').hide();
+                        }
+                    }
+
+                // Submitt button
+                    $('#submitbtn').click(function () {
+                        validateUsername();
+                        validatePassword();
+                        validateConfirmPasswrd();
+                        validateEmail();
+                        if ((usernameError == true) &&
+                            (passwordError == true) &&
+                            (confirmPasswordError == true) &&
+                            (emailError == true)) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    });
+                });
+
+
+
+    </script>
+
+  {% endblock custom_js %}
