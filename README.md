@@ -31,12 +31,16 @@ An automated, real-time biometric attendance management system built with Python
          ▼
 [ Django Backend & Database ]  ───► Records Timestamped Attendance Entries
 
+
+
 ## Tech Stack & Dependencies
-  Programming Language: Python 3.8+
-  Web Framework: Django
-  Computer Vision & Processing: OpenCV, MTCNN
-  Deep Learning Libraries: TensorFlow, Keras, NumPy
-  Database: SQLite (Development) / PostgreSQL (Production)
+
+* **Programming Language:** Python 3.8+
+* **Web Framework:** Django
+* **Computer Vision & Processing:** OpenCV, MTCNN
+* **Deep Learning Libraries:** TensorFlow, Keras, NumPy
+* **Database:** SQLite (Development) / PostgreSQL (Production)
+
 
 
 Project Structure
