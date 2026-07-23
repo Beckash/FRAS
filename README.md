@@ -81,9 +81,10 @@ pip install -r requirements.txt
 
 ### 4. Apply Database Migrations
 
-##### Create the database tables for user profiles, attendance logs, and sessions:
-python manage.py makemigrations
-python manage.py migrate
+## Create the database tables for user profiles, attendance logs, and sessions:
+
+- python manage.py makemigrations
+- python manage.py migrate
 
 ### 5. Create an Administrative Superuser
 ##### Create an admin account to access the administrative web portal:
