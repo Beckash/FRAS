@@ -102,7 +102,7 @@ python manage.py createsuperuser
 #### Start the Django server:
 python manage.py runserver
 
-#### Open your browser and go to http://127.0.0.1:8000/.
+## Open your browser and go to http://127.0.0.1:8000/.
 
 ## How to Use the System
  1. Log In: Access the Django admin portal using your superuser credentials.
