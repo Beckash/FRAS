@@ -31,7 +31,7 @@ An automated, real-time biometric attendance management system built with Python
          ▼
 [ Django Backend & Database ]  ───► Records Timestamped Attendance Entries
 
-
+```
 
 ## Tech Stack & Dependencies
 
@@ -43,7 +43,7 @@ An automated, real-time biometric attendance management system built with Python
 
 
 
-Project Structure
+## Project Structure
 ├── manage.py
 ├── requirements.txt
 ├── README.md
@@ -59,7 +59,7 @@ Project Structure
 │   └── templates/          # HTML templates for the web portal
 └── dataset/                # Stored user profile vectors and images
 
-Complete Installation & Setup Guide
+## Complete Installation & Setup Guide
 Follow these steps sequentially to set up and run the system locally on your machine:
 
 1. Clone the Repository
