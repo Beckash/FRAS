@@ -63,21 +63,26 @@ An automated, real-time biometric attendance management system built with Python
 Follow these steps sequentially to set up and run the system locally on your machine:
 
 ### 1. Clone the Repository
-git clone [https://github.com/your-username/face-recognition-attendance.git](https://github.com/your-username/face-recognition-attendance.git)
-cd face-recognition-attendance
+
+- git clone [https://github.com/your-username/face-recognition-attendance.git](https://github.com/your-username/face-recognition-attendance.git)
+- cd face-recognition-attendance
 
 ### 2. Set Up a Virtual Environment
 #### On Linux / macOS:
-python3 -m venv venv
-source venv/bin/activate
+
+- python3 -m venv venv
+- source venv/bin/activate
+- 
 #### On Windows:
-python -m venv venv
-venv\Scripts\activate
+
+- python -m venv venv
+- venv\Scripts\activate
 
 ### 3. Install Required Dependencies
 #### Ensure you have pip updated, then run:
-pip install --upgrade pip
-pip install -r requirements.txt
+
+-pip install --upgrade pip
+-pip install -r requirements.txt
 
 ### 4. Apply Database Migrations
 
